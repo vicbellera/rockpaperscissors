@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Rock Paper Scissors Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" href="icon.png" />
+</head>
+
+
+<body>
+    <h1>ROCK, PAPER, SCISSORS!</h1>
+
+    <div class='grid-container'>
+
+        <div class='rock' title="Rock">
+            <img class='icon' src='rock.png'>
+
+
+        </div>
+
+        <div class='paper'>
+            <img class='icon' src='paper.png'>
+
+        </div>
+        <div class='scissors'>
+            <img class='icon' src='scissors.png'>
+
+        </div>
+
+        <div class='score'>
+
+            <div>
+                0 | 0
+
+            </div>
+
+        </div>
+
+        <div class='rounds'>
+            Make a choice and hit GO!
+
+
+        </div>
+
+        <div class='player'>
+
+
+        </div>
+
+        <div class='cpu'>
+
+
+
+        </div>
+
+        <div class='cpu2'>
+            <img src='cpu.png'>
+
+        </div>
+
+        <div id='playername' class='names'></div>
+        <div class='names'>CPU</div>
+
+        <div class='select'><button class='button'>GO!</button></div>
+
+
+    </div>
+
+    <div id='myModal' class='modal'>
+        <div class='modal-content'>
+            <span class="close">&times;</span>
+        </div>
+    </div>
+
+    <h3>By: vicbellera</h3>
+
+
+</body>
+
+<script>
+    let keepGoing = true;
+    let keepGoing2 = true;
+    let person = '';
+    let maxpoints = 0;
+
+    while (keepGoing) {
+        person = prompt('Please enter your name', 'Player');
+
+        if (person !== null) {
+            let playername = document.querySelector('#playername');
+            playername.textContent = `${person}`;
+            keepGoing = false;
+        }
+    }
+
+    while (keepGoing2) {
+        maxpoints = prompt("For how many points?", "3");
+
+        if (maxpoints !== null) {
+            maxpoints = parseInt(maxpoints);
+            keepGoing2 = false;
+        }
+    }
+
+    const rock = document.querySelector('.rock');
+    const paper = document.querySelector('.paper');
+    const scissors = document.querySelector('.scissors');
+    const button = document.querySelector('button');
+    const message = document.querySelector('.rounds');
+    const cpu = document.querySelector('.cpu');
+    const player = document.querySelector('.player');
+    const score = document.querySelector('.score');
+    const myModal = document.getElementById('myModal');
+    const span = document.querySelector('.close');
+    const modalCont = document.querySelector('.modal-content');
+
+
+    let choice = '';
+    let cpuchoice = '';
+
+    let msg = 'Hello ' + person + '!\n Choose one and hit GO!';
+    message.textContent = msg;
+
+    let playerPoints = 0;
+    let computerPoints = 0;
+    let DOM_img = document.createElement("img");
+    DOM_img.classList.toggle('icon2');
+
+    let DOM_img2 = document.createElement("img");
+    DOM_img2.classList.toggle('icon2');
+
+    function computerPlay() {
+        let choiceList = ["Rock", "Paper", "Scissors"];
+        let cpuchoice = choiceList[Math.floor(Math.random() * choiceList.length)];
+
+
+
+        switch (cpuchoice) {
+            case 'Rock':
+                DOM_img2.src = "rock2.png";
+                cpu.appendChild(DOM_img2);
+                break;
+
+            case 'Paper':
+                DOM_img2.src = "paper2.png";
+                cpu.appendChild(DOM_img2);
+                break;
+
+            case 'Scissors':
+                DOM_img2.src = "scissors2.png";
+                cpu.appendChild(DOM_img2);
+                break;
+
+        }
+
+        return cpuchoice;
+    }
+
+    function playRound(playerSelection, computerSelection) {
+        let message;
+        if ((playerSelection === "Rock") && (computerSelection === "Paper")) {
+            message = "You lost! Paper beats Rock!";
+            return message;
+        } else if ((playerSelection === "Rock") && (computerSelection === "Scissors")) {
+            message = "You won! Rock beats Scissors!";
+            return message;
+        } else if ((playerSelection === "Paper") && (computerSelection === "Rock")) {
+            message = "You won! Paper beats Rock!";
+            return message;
+        } else if ((playerSelection === "Paper") && (computerSelection === "Scissors")) {
+            message = "You lost! Scissors beats Paper!";
+            return message;
+        } else if ((playerSelection === "Scissors") && (computerSelection === "Paper")) {
+            message = "You won! Scissors beats Paper!";
+            return message;
+        } else if ((playerSelection === "Scissors") && (computerSelection === "Rock")) {
+            message = "You lost! Rock beats Scissors!";
+            return message;
+        } else {
+            message = "It's a tie!"
+            return message;
+        }
+    }
+
+    function wholeGame() {
+
+        if (choice === '') {
+            alert('SELECT ROCK, PAPER OR SCISSORS FIRST');
+            return;
+        }
+
+        cpuchoice = computerPlay();
+        console.log(cpuchoice);
+        console.log(choice);
+
+        msg = playRound(choice, cpuchoice);
+
+        if (msg.charAt(4) === "w") {
+            playerPoints++;
+        } else if (msg.charAt(4) === "l") {
+            computerPoints++;
+        }
+
+        message.textContent = msg;
+        score.textContent = playerPoints + ' | ' + computerPoints;
+
+        if (playerPoints === maxpoints) {
+            message.textContent = "Choose one and hit Go!";
+            playerPoints = 0;
+            computerPoints = 0;
+            score.textContent = playerPoints + ' | ' + computerPoints;
+            modalCont.textContent = `CONGRATULATIONS! YOU'VE WON! Click anywhere to keep playing!`;
+            myModal.style.display = 'block';
+                      
+
+        } else if (computerPoints === maxpoints) {
+            message.textContent = "Choose one and hit Go!";
+            playerPoints = 0;
+            computerPoints = 0;
+            score.textContent = playerPoints + ' | ' + computerPoints;
+            modalCont.textContent = "YOU'VE LOST! Click anywhere to keep trying!";
+            myModal.style.display = 'block';
+
+        }
+
+    }
+
+    modalCont.onclick = function () {
+        myModal.style.display = "none";
+    }
+
+    myModal.onclick = function () {
+        myModal.style.display = "none";
+    }
+
+
+
+
+    rock.addEventListener('click', () => {
+        DOM_img.src = "rock.png";
+        player.appendChild(DOM_img);
+        choice = 'Rock';
+        console.log(choice);
+        cpu.removeChild(DOM_img2);
+        message.textContent = '';
+        return choice;
+    })
+
+    paper.addEventListener('click', () => {
+        DOM_img.src = "paper.png";
+        player.appendChild(DOM_img);
+        choice = 'Paper';
+        console.log(choice);
+        cpu.removeChild(DOM_img2);
+        message.textContent = '';
+        return choice;
+    })
+
+    scissors.addEventListener('click', () => {
+        DOM_img.src = "scissors.png";
+        player.appendChild(DOM_img);
+        choice = 'Scissors';
+        console.log(choice);
+        cpu.removeChild(DOM_img2);
+        message.textContent = '';
+        return choice;
+    })
+
+    button.addEventListener('click', wholeGame);
+
+</script>
+
+</html>
