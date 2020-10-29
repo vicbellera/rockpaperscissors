@@ -21,6 +21,16 @@ h3 {
     margin: 0;
 }
 
+#signature {
+    display: block;
+    color: black;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: 0.4fr 0.55fr 0.55fr 0.4fr;
